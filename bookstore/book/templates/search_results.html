@@ -1,0 +1,121 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Title</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <style>
+
+
+        #top a {
+
+           font-size: 100%;
+           font-weight: 700;
+           text-decoration: none;
+           padding-left: 1%;
+           padding-right: 2%;
+        }
+        #top {
+
+            margin-right: 5%;
+            margin-top: 1%;
+            margin-bottom: 1%;
+            text-align: right;
+
+        }
+
+        #top1 {
+
+            margin-right: 5%;
+            margin-top: 1%;
+            margin-bottom: 1%;
+            text-align: right;
+
+        }
+
+        .search  {
+             text-align: center;
+             padding-top: 2%;
+
+
+        }
+
+    .search input[type="text"] {
+        width: 350px;
+        height: 40px;
+        font-size: 16px;
+        border-radius: 10px;
+    }
+
+        .dropdown-item {
+                  color: blue;
+        }
+
+
+
+
+
+
+    </style>
+</head>
+<body style="background: rgb(230, 218, 230);">
+
+<div id="top">
+    <a href="{% url 'Index'%}">Home</a>
+    <a href="{% url 'Index'%}#gallery">Gallery</a>
+    <a href="">Reviews</a>
+    <a href="">Contact us</a>
+
+
+    <a href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        {% if user.is_authenticated %}
+        {{ user.username }}: Logout
+        {% else %}
+        Login
+        {% endif %}
+    </a>
+
+    <ul class="dropdown-menu">
+        {% if user.is_authenticated %}
+        <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
+        {% else %}
+        <li><a class="dropdown-item" href="{% url 'login' %}">Login</a></li>
+        <li><a class="dropdown-item" href="{% url 'signup' %}">Signup</a></li>
+        {% endif %}
+    </ul>
+
+
+</div>
+
+<div style=" height:610px;  background-image: url('{% static 'pictures/book1.jpg' %}');background-repeat: no-repeat;background-size: cover;">
+
+    <h1 style="margin-left: 38%;padding-top: 10%;font-weight: 900;color: #aed8e9;text-shadow:0dvb 4px; font-size: 400%">
+        Books Store</h1>
+    <h4 style="margin-left: 40%;">Book for all ages...</h4>
+    <form class="search" action="{% url 'search-results' %}" method="get">
+        <input name="q" type="text" autocomplete="on" placeholder=" Search">
+        <br>
+        <br>
+
+        <h3 class=" 'text-secondary"> Search Result</h3>
+        <hr>
+        {% for every in object_list %}
+        <div>
+            <h3><a href="{% url 'details' every.pk%}"> {{every.title}}</a></h3>
+            <p>Author: {{every.author}}</p>
+        </div>
+        {% empty %}
+        <h5 class="text-danger">Nothing found :(</h5>
+        {% endfor %}
+    </form>
+
+</div>
+
+
+
+
+</body>
+</html>
